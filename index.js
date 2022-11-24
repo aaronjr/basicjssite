@@ -69,20 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // allow counter to loop through photos
             // and not end out of range
             if(direction == 'right'){
-                if( counter == 5 ){
-                    counter = 0
-                }
-                else{
-                    counter++
-                }}
-            else{
-                if( counter == 0 ){
-                    counter = 5
-                }
-                else{
-                    counter--
-                }
+                counter == 5 ? counter = 0 : counter++
             }
+            else{
+                counter == 0 ? counter = 5 : counter--
+            }
+            
             // each time clear the photo frame 
             clear(live)
 
