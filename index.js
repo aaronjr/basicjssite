@@ -54,6 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
     imageEl.push(createIMG(image[0], image[1], image[2]));
   });
 
+  // update correct circle to black when active
+  function updatedButton(id) {
+    const buttons = document.querySelectorAll('.circle');
+    buttons.forEach((button) => {
+      // eslint-disable-next-line no-unused-expressions
+      button.id == id ? button.style.backgroundColor = 'black' : button.style.backgroundColor = 'white';
+    });
+  }
+
   // initialize counter
   let counter = 0;
 
@@ -72,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         counter === 5 ? counter = 0 : counter += 1;
       } else {
         // eslint-disable-next-line no-unused-expressions
-        counter === 0 ? counter = 5 : counter = 1;
+        counter === 0 ? counter = 5 : counter -= 1;
       }
 
       // each time clear the photo frame
@@ -80,9 +89,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // add correct image to page
       live.append(imageEl[counter]);
+      updatedButton(counter);
     });
   });
 
   // set first image of list
+  updatedButton(counter);
   live.append(imageEl[counter]);
+
+  function updatePhoto(number) {
+    // each time clear the photo frame
+    clear(live);
+    // add correct image to page
+    live.append(imageEl[number]);
+    // update color of circle
+    updatedButton(number);
+  }
+
+  const buttons = document.querySelectorAll('.circle');
+  buttons.forEach((button) => {
+    // eslint-disable-next-line func-names
+    button.addEventListener('click', function () {
+      updatePhoto(this.id);
+      counter = parseInt(this.id, 10);
+    });
+  });
+
+  function timerfunc() {
+    // eslint-disable-next-line no-unused-expressions
+    counter === 5 ? counter = 0 : counter += 1;
+    updatePhoto(counter);
+  }
+
+  const timer = setInterval(() => { timerfunc(); }, 3000);
 });
