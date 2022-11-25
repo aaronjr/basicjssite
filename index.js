@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const burger = document.querySelector('.hamburgerHolder');
   const list = document.querySelector('.nav-list');
   const cross = document.querySelector('.cross');
+  // where to place photos
+  const live = document.querySelector('.imageLive');
+  // get circles
+  const buttons = document.querySelectorAll('.circle');
 
   // hide burger show nav
   burger.addEventListener('click', () => {
@@ -33,9 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // where to place photos
-  const live = document.querySelector('.imageLive');
-
   // content.append(createEle("div", "name", "hi"))
   const images = [
     ['img', 'on', 'https://images.unsplash.com/photo-1505159940484-eb2b9f2588e2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'],
@@ -56,11 +57,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // update correct circle to black when active
   function updatedButton(id) {
-    const buttons = document.querySelectorAll('.circle');
     buttons.forEach((button) => {
       // eslint-disable-next-line no-unused-expressions
       button.id == id ? button.style.backgroundColor = 'black' : button.style.backgroundColor = 'white';
     });
+  }
+
+  function updatePhoto(number) {
+    // each time clear the photo frame
+    clear(live);
+    // add correct image to page
+    live.append(imageEl[number]);
+    // update color of circle
+    updatedButton(number);
   }
 
   // initialize counter
@@ -84,42 +93,30 @@ document.addEventListener('DOMContentLoaded', () => {
         counter === 0 ? counter = 5 : counter -= 1;
       }
 
-      // each time clear the photo frame
-      clear(live);
-
       // add correct image to page
-      live.append(imageEl[counter]);
-      updatedButton(counter);
+      updatePhoto(counter);
     });
   });
 
-  // set first image of list
-  updatedButton(counter);
-  live.append(imageEl[counter]);
-
-  function updatePhoto(number) {
-    // each time clear the photo frame
-    clear(live);
-    // add correct image to page
-    live.append(imageEl[number]);
-    // update color of circle
-    updatedButton(number);
-  }
-
-  const buttons = document.querySelectorAll('.circle');
   buttons.forEach((button) => {
     // eslint-disable-next-line func-names
     button.addEventListener('click', function () {
+    // update correct photo and update the counter to new place.
       updatePhoto(this.id);
       counter = parseInt(this.id, 10);
     });
   });
 
   function timerfunc() {
+    // set counter and check not out of range
     // eslint-disable-next-line no-unused-expressions
     counter === 5 ? counter = 0 : counter += 1;
     updatePhoto(counter);
   }
 
+  // set first image of list
+  updatePhoto(counter);
+
+  // timer to update image every 3 seconds
   const timer = setInterval(() => { timerfunc(); }, 3000);
 });
